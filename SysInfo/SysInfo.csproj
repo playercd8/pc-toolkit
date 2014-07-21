@@ -51,6 +51,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Info\BIOS.cs" />
+    <Compile Include="Info\Display.cs" />
     <Compile Include="Info\LogicalDisk.cs" />
     <Compile Include="Info\OperatingSystem.cs" />
     <Compile Include="Info\Process.cs" />

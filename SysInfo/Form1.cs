@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Windows.Input;
 
 namespace SysInfo
 {
@@ -13,47 +15,39 @@ namespace SysInfo
             InitializeComponent();
 
             this.tabControl1.TabPages.Clear();
-
-            string [] TabName = {
-                                    "OperatingSystem",
-                                    "Processor",
-                                    "LogicalDisk",
-                                    "Service",
-                                    "Process"
-                                };
+                        
             int i = 0;
-            foreach (string tabName in TabName) 
+            Assembly a = this.GetType().Assembly;
+            foreach (Type type in a.GetTypes())
             {
-                this.tabControl1.TabPages.Add(tabName);
-                this.tabControl1.TabPages[i].Show();
-                i++;
-            }
-
+                string tabName = type.Name;
+                if ((tabName != "Form1") && (tabName != "Program") && (tabName != "Resources") && (tabName != "Settings"))
+                {
+                    this.tabControl1.TabPages.Add(tabName);
+                    this.tabControl1.TabPages[i].Show();
+                    i++;
+                }
+            }          
+           
             tabControl1_SelectedIndexChanged(null, null);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Cursor oldCursor = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+            
             TabPage tab = this.tabControl1.TabPages[this.tabControl1.SelectedIndex];
-            switch (tab.Text)
-            {
-                case "OperatingSystem":
-                    Info.OperatingSystem.Show(tab); break;
-                case "Processor":
-                    Info.Processor.Show(tab);
-                    break;
-                case "LogicalDisk":
-                    Info.LogicalDisk.Show(tab);
-                    break;
-                case "Service": 
-                    Info.Service.Show(tab); 
-                    break;
-                case "Process":
-                    Info.Process.Show(tab);
-                    break;
-                default:
-                    break;
+            
+            Assembly a = this.GetType().Assembly;
+            object o = a.CreateInstance("SysInfo.Info."+tab.Text);  
+            Type t = o.GetType();  
+            MethodInfo mi = t.GetMethod("Show", new Type[] { typeof(TabPage) });
+            if (mi != null) {
+                mi.Invoke(o, new object [] {tab});  
             }
+
+            Cursor.Current = oldCursor;
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
