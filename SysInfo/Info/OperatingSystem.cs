@@ -38,12 +38,12 @@ namespace SysInfo.Info
             ListView listView1;
             if (tab.Controls.Find("listView1", false).Length > 0)
             {
-                listView1 = tab.Controls.Find("listView1", false)[0] as ListView;
+                listView1 = tab.Controls.Find("listView1", false)[0] as ListView2;
                 listView1.Items.Clear();
             }
             else
             {
-                listView1 = new ListView();
+                listView1 = new ListView2();
                 listView1.Name = "listView1";
                 listView1.View = View.Details;
                 listView1.Scrollable = true;

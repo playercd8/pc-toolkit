@@ -52,12 +52,19 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Info\BIOS.cs" />
+    <Compile Include="Info\Memory.cs" />
+    <Compile Include="Info\Printer.cs" />
+    <Compile Include="Info\Product.cs" />
+    <Compile Include="Info\Share.cs" />
     <Compile Include="Info\Display.cs" />
     <Compile Include="Info\LogicalDisk.cs" />
     <Compile Include="Info\OperatingSystem.cs" />
     <Compile Include="Info\Process.cs" />
     <Compile Include="Info\Processor.cs" />
     <Compile Include="Info\Service.cs" />
+    <Compile Include="ListView2.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

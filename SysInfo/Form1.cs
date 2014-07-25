@@ -15,19 +15,26 @@ namespace SysInfo
             InitializeComponent();
 
             this.tabControl1.TabPages.Clear();
+
+            List<string> tabNames = new List<string>();
                         
-            int i = 0;
             Assembly a = this.GetType().Assembly;
             foreach (Type type in a.GetTypes())
             {
-                string tabName = type.Name;
-                if ((tabName != "Form1") && (tabName != "Program") && (tabName != "Resources") && (tabName != "Settings"))
+                if (type.Namespace == "SysInfo.Info")
                 {
-                    this.tabControl1.TabPages.Add(tabName);
-                    this.tabControl1.TabPages[i].Show();
-                    i++;
+                    tabNames.Add(type.Name);
                 }
-            }          
+            }
+
+            int i = 0;
+            tabNames.Sort();
+            foreach (string tabName in tabNames)
+            {
+                this.tabControl1.TabPages.Add(tabName);
+                this.tabControl1.TabPages[i].Show();
+                i++;
+            }
            
             tabControl1_SelectedIndexChanged(null, null);
         }
@@ -72,5 +79,6 @@ namespace SysInfo
                 }
             }
         }
+       
     }
 }

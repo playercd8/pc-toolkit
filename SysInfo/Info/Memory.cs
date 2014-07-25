@@ -6,36 +6,23 @@ using System.Windows.Forms;
 
 namespace SysInfo.Info
 {
-    class Service
+    class Memory
     {
         public static void Show(TabPage tab)
         {
             string[] ColumnName = {
-                                      "Service Name",
-                                      "DisplayName",
-                                      "Description",
-                                      "ServiceType",
-                                      "Started",
-                                      "StartMode",
-                                      "StartName",
-                                      "State",
-                                      "PathName",
-                                      "ProcessId",
-                                      "Instance Path"
+                                      "Name",
+                                      "DeviceID",
+                                      "StartingAddress",
+                                      "EndingAddress"                                                          
                                   };
             string[] ItemName = { 
-                                    "DisplayName",
-                                    "Description",
-                                    "ServiceType",
-                                    "Started",
-                                    "StartMode",
-                                    "StartName",
-                                    "State",
-                                    "PathName",
-                                    "ProcessId"
+                                      "DeviceID",
+                                      "StartingAddress",
+                                      "EndingAddress"
                                 };
 
-            ManagementClass c = new ManagementClass("Win32_Service");
+            ManagementClass c = new ManagementClass("Win32_MemoryDevice");
 
             ListView listView1;
             if (tab.Controls.Find("listView1", false).Length > 0)
@@ -43,7 +30,7 @@ namespace SysInfo.Info
                 listView1 = tab.Controls.Find("listView1", false)[0] as ListView2;
                 listView1.Items.Clear();
             }
-            else 
+            else
             {
                 listView1 = new ListView2();
                 listView1.Name = "listView1";
@@ -57,7 +44,7 @@ namespace SysInfo.Info
                 }
 
                 tab.Controls.Add(listView1);
-                listView1.Show();                
+                listView1.Show();
             }
 
             listView1.BeginUpdate();
@@ -68,8 +55,9 @@ namespace SysInfo.Info
             foreach (ManagementObject o in c.GetInstances())
             {
                 ListViewItem item = new ListViewItem();
-                item.Text =  o["Name"].ToString();
-                foreach (string itemName in ItemName) {
+                item.Text = o["Name"].ToString();
+                foreach (string itemName in ItemName)
+                {
                     if (o[itemName] != null)
                         item.SubItems.Add(o[itemName].ToString());
                     else
