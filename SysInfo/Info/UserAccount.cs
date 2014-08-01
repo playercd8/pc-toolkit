@@ -6,25 +6,24 @@ using System.Windows.Forms;
 
 namespace SysInfo.Info
 {
-    class Product
+    class UserAccount
     {
         public static void Show(TabPage tab)
         {
             string[] ItemName = { 
                                     "Name",
-                                    "Version",
                                     "Description",
-                                    "InstallLocation",
-                                    "InstallDate2",
-                                    "InstallSource",
-                                    "PackageName",
-                                    "Language",
-                                    "LocalPackage",
-                                    "HelpLink",
-                                    "HelpTelephone",
-                                    "Vendor",
-                                    "IdentifyingNumber"
+                                    "Disabled",
+                                    "Domain",
+                                    "LocalAccount",
+                                    "Lockout",
+                                    "PasswordChangeable",
+                                    "PasswordExpires",
+                                    "PasswordRequired",
+                                    "SID",
+                                    "Status"
                                 };
+
             string[] ToolTip = new string[ItemName.Length];
 
             ListView2 listView1;
@@ -54,7 +53,7 @@ namespace SysInfo.Info
                 - SystemInformation.CaptionHeight
                 - SystemInformation.ToolWindowCaptionButtonSize.Height;
 
-            ManagementClass c = new ManagementClass("Win32_Product");
+            ManagementClass c = new ManagementClass("Win32_UserAccount");
             c.Options.UseAmendedQualifiers = true;
 
             //Get ToolTip
@@ -80,6 +79,7 @@ namespace SysInfo.Info
                 i++;
             }
 
+            //Get Data
             foreach (ManagementObject o in c.GetInstances())
             {
                 ListViewItem item = new ListViewItem();
@@ -102,10 +102,10 @@ namespace SysInfo.Info
                     }
                     i++;
                 }
-                item.SubItems.Add(o.Path.ToString());
 
                 listView1.Items.Add(item);
             }
+
             listView1.TodoAutoResizeColumns();
             listView1.EndUpdate();
         }

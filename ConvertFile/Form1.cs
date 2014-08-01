@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DirectShowLib;
 using System.Runtime.InteropServices.ComTypes;
 using System.IO;
+using Microsoft.Win32;
 
 namespace ConvertFile
 {
@@ -18,9 +19,31 @@ namespace ConvertFile
             this.label1.Text = "";
             this.label2.Text = "";
             this.label3.Text = "";
+
+            DefFilter = "All files (*.*)|*.*";
+
+            if (IsFilterExist("{1E1299A2-9D42-4F12-8791-D79E376F4143}")) //Matroska Mux Clsid
+                DefFilter += "|Matroska Multimedia files (*.mkv)|*.mkv";
+            if (IsFilterExist("{7C23220E-55BB-11D3-8B16-00C04FB6BD3D}")) //WM ASF Writer
+                DefFilter += "|Windows Media Vidio files (*.wmv)|*.wmv";
+        }
+
+        bool IsFilterExist(string clsid) 
+        { 
+            string strKey = string.Format(@"CLSID\{0}", clsid);
+            RegistryKey regKey = Registry.ClassesRoot.OpenSubKey(strKey);
+            if (regKey == null) return false;
+
+            string strValue = (string)regKey.GetValue("", "");
+            if (strValue == "") return false;
+
+            return true;
         }
 
         const int WM_GRAPHNOTIFY = 0x00008001;
+        //const string DefFilter = "All files (*.*)|*.*|Matroska Multimedia files (*.mkv)|*.mkv|Windows Media Vidio files (*.wmv)|*.wmv|MP4 Video (*.mp4)|*.mp4"; 
+        //const string DefFilter = "All files (*.*)|*.*|Matroska Multimedia files (*.mkv)|*.mkv|Windows Media Vidio files (*.wmv)|*.wmv"; 
+        string DefFilter;
 
         // The main com object
         FilterGraph fg = null;
@@ -41,10 +64,11 @@ namespace ConvertFile
             }
             else
             {
-                this.openFileDialog1.InitialDirectory = "c:\\";
+                this.openFileDialog1.FileName = "";
+                this.openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos) + @"\"; 
             }
 
-            openFileDialog1.Filter = "All files (*.*)|*.*|Matroska Multimedia files (*.mkv)|*.mkv|Windows Media Vidio files (*.wmv)|*.wmv";
+            openFileDialog1.Filter = DefFilter;
             openFileDialog1.FilterIndex = 1;
             DialogResult result = this.openFileDialog1.ShowDialog();
 	        if (result == DialogResult.OK) // Test result.
@@ -63,10 +87,11 @@ namespace ConvertFile
             }
             else
             {
-                this.saveFileDialog1.InitialDirectory = "c:\\";
+                this.saveFileDialog1.FileName = "";
+                this.saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonVideos) + @"\";
             }
 
-            saveFileDialog1.Filter = "All files (*.*)|*.*|Matroska Multimedia files (*.mkv)|*.mkv|Windows Media Vidio files (*.wmv)|*.wmv"; 
+            saveFileDialog1.Filter = DefFilter; 
             saveFileDialog1.FilterIndex = 1;
             DialogResult result = this.saveFileDialog1.ShowDialog();
             if (result == DialogResult.OK) // Test result.
