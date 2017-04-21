@@ -87,6 +87,7 @@ namespace SysInfo.Info
             {
                 String[] ValueNames = regKey.GetValueNames();
                 string strValue;
+                string fileName;
 
                 foreach (string ValueName in ValueNames) 
                 {
@@ -98,9 +99,14 @@ namespace SysInfo.Info
                     strValue = (string)regKey.GetValue(ValueName, "");
                     item.SubItems.Add(strValue);
 
-                    string fileName = string.Format(@"{0}\{1}",
-                        Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
-                        strValue);
+                    if (strValue.Substring(1,2) != ":\\")
+                    {
+                        fileName = string.Format(@"{0}\{1}",
+                            Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
+                            strValue);
+                    } else {
+                        fileName = strValue;
+                    }
                     FileInfo f = new FileInfo(fileName);
                     item.SubItems.Add(f.Length.ToString());
 
