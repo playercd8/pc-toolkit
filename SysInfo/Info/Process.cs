@@ -114,11 +114,18 @@ namespace SysInfo.Info
                     i++;
                 }
 
-                ManagementBaseObject outParams = o.InvokeMethod("GetOwner", null, null);
-                if ((outParams["Domain"] != null) && (outParams["User"] != null))
-                    item.SubItems.Add(outParams["Domain"].ToString() + "/" + outParams["User"].ToString());
-                else
+                try
+                {
+                    ManagementBaseObject outParams = o.InvokeMethod("GetOwner", null, null);
+                    if ((outParams["Domain"] != null) && (outParams["User"] != null))
+                        item.SubItems.Add(outParams["Domain"].ToString() + "/" + outParams["User"].ToString());
+                    else
+                        item.SubItems.Add("");
+                }
+                catch
+                {
                     item.SubItems.Add("");
+                }
                 item.SubItems[i].Tag = "";
 
 
