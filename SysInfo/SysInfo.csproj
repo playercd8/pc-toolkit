@@ -57,6 +57,7 @@
     <Compile Include="Info\FileExt.cs" />
     <Compile Include="Info\Font.cs" />
     <Compile Include="Info\IME.cs" />
+    <Compile Include="Info\PnP.cs" />
     <Compile Include="Info\UserGroup.cs" />
     <Compile Include="Info\Memory.cs" />
     <Compile Include="Info\Printer.cs" />
